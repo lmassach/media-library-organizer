@@ -4,3 +4,7 @@
 # Python temporaries
 *.py[cod]
 __pycache__/
+
+# Configuration files
+*.json
+!/tests/*.json
