@@ -1,0 +1,6 @@
+# IDE
+.vscode/
+
+# Python temporaries
+*.py[cod]
+__pycache__/
