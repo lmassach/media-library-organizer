@@ -5,7 +5,9 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CONFIG = {
-    # TODO
+    'scan_dirs': ['PLEASE PUT HERE THE DIRECTORIES TO SCAN'],
+    'lib_dir': 'PLEASE PUT HERE THE DIRECTORY WITH THE LIBRARY',
+    'link': True
 }
 
 

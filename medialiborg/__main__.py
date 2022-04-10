@@ -3,6 +3,7 @@ import argparse
 import logging
 import logging.handlers
 import os
+import sys
 from .config import load_config, write_default_config
 
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,14 +11,20 @@ DEFAULT_CONFIG_FILE = os.path.join(MODULE_DIR, "medialiborg.json")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)  # TODO examples in epilog?
-    # TODO
-    parser.add_argument("-c", "--config", metavar="PATH",
-                        default=DEFAULT_CONFIG_FILE,
-                        help="The configuration file, default medialiborg.json"
-                             " in the module directory.")
-    parser.add_argument("-v", "--verbose", action="store_const",
-                        dest="loglevel", const=logging.WARNING,
-                        default=logging.DEBUG, help="Print debug messages.")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-c", "--config", metavar="PATH",
+                       default=DEFAULT_CONFIG_FILE,
+                       help="The configuration file, default medialiborg.json"
+                            " in the module directory.")
+    group.add_argument("--write-default-config", metavar="PATH",
+                       help="Write the default configuration to the given file"
+                            " and exit.")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-v", "--verbose", action="store_const",
+                       dest="loglevel", const=logging.INFO,
+                       default=logging.WARNING, help="Print more messages.")
+    group.add_argument("--debug", action="store_const", dest="loglevel",
+                       const=logging.DEBUG, help="Print debug messages.")
     parser.add_argument("-l", "--log", help="Log file (default stderr).")
     args = parser.parse_args()
 
@@ -36,6 +43,11 @@ if __name__ == "__main__":
         h.setFormatter(f)
     logging.basicConfig(level=args.loglevel, handlers=[h])
     logger = logging.getLogger("main")
+
+    # Write default config
+    if args.write_default_config is not None:
+        write_default_config(args.write_default_config)
+        sys.exit(0)
 
     # Load configuration
     cfg = load_config(args.config)
