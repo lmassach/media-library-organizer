@@ -1,3 +1,5 @@
+**Project was abandoned before any progress**
+
 # Media library organizer
 A script to automatically add new content from a directory to a Jellyfin-style media library folder structure.
 
